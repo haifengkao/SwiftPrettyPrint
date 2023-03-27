@@ -16,9 +16,14 @@
     import SwiftUI
 #endif
 
+public typealias Fields = [(String, String)]
 public typealias CustomStringFilter<T: Any> = (_ target: T, _ debug: Bool, _ original: String) -> String
+public typealias CustomStringFilterWithFields<T: Any> = (_ target: T, _ debug: Bool, _ original: String, _ fields: Fields) -> String
+private func identity<T: Any>(_: T, _: Bool, _ original: String) -> String {
+    original
+}
 
-private func identity<T: Any>(_ target: T, _ debug: Bool, _ original: String) -> String {
+private func identityWithFields<T: Any>(_: T, _: Bool, _ original: String, _: Fields) -> String {
     original
 }
 
@@ -28,7 +33,7 @@ public struct SimpleDescriber {
     var timeZone: TimeZone = .current
 
     public static var customEnumFilter: CustomStringFilter<Any> = identity
-    public static var customObjectFilter: CustomStringFilter<Any> = identity
+    public static var customObjectFilter: CustomStringFilterWithFields<Any> = identityWithFields
     public static var customValueFilter: CustomStringFilter<Any> = identity
 
     func string<T: Any>(_ target: T, debug: Bool) -> String {
@@ -111,7 +116,7 @@ public struct SimpleDescriber {
         // Object
         let fields = objectFields(target, debug: debug)
         let value = formatter.objectString(typeName: typeName, fields: fields)
-        return Self.customObjectFilter(target, debug, value)
+        return Self.customObjectFilter(target, debug, value, fields)
     }
 
     func extractKeyValues(from dictionary: Any) throws -> [(Any, Any)] {
