@@ -478,7 +478,8 @@ public struct SimpleDescriber {
             // - `Fruit.orange(juicy: true)` - `body` is `(juicy: 42)` of tuple
             //
 
-            return "\(prefix)(" + body.removeEnclosedParentheses() + ")"
+            let value =  "\(prefix)(" + body.removeEnclosedParentheses() + ")"
+            return Self.customEnumFilter(target, debug, value)
         }
     }
 
