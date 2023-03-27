@@ -295,9 +295,9 @@ extension Pretty {
 
     // MARK: - private
 
-    private typealias Printer = (String?, [Any], String, Option) -> String
+    typealias Printer = (String?, [Any], String, Option) -> String
 
-    private static func _output(
+    static func _output(
         printer: Printer,
         label: String?,
         _ targets: [Any],

@@ -16,10 +16,20 @@
     import SwiftUI
 #endif
 
-struct SimpleDescriber {
+public typealias CustomStringFilter<T: Any> = (_ target: T, _ debug: Bool, _ original: String) -> String
+
+private func identity<T: Any>(_ target: T, _ debug: Bool, _ original: String) -> String {
+    original
+}
+
+public struct SimpleDescriber {
     var formatter: PrettyFormatter
     var theme: ColorTheme = .plain
     var timeZone: TimeZone = .current
+
+    public static var customEnumFilter: CustomStringFilter<Any> = identity
+    public static var customObjectFilter: CustomStringFilter<Any> = identity
+    public static var customValueFilter: CustomStringFilter<Any> = identity
 
     func string<T: Any>(_ target: T, debug: Bool) -> String {
         func _string(_ target: Any) -> String {
@@ -95,12 +105,13 @@ struct SimpleDescriber {
 
         // ValueObject
         if let value = asValueString(target, debug: debug) {
-            return value
+            return Self.customValueFilter(target, debug, value)
         }
 
         // Object
         let fields = objectFields(target, debug: debug)
-        return formatter.objectString(typeName: typeName, fields: fields)
+        let value = formatter.objectString(typeName: typeName, fields: fields)
+        return Self.customObjectFilter(target, debug, value)
     }
 
     func extractKeyValues(from dictionary: Any) throws -> [(Any, Any)] {
@@ -430,11 +441,13 @@ struct SimpleDescriber {
         let typeName = String(describing: mirror.subjectType)
 
         if mirror.children.count == 0 {
+            var value = ".\(target)"
+
             if debug {
-                return "\(typeName).\(target)"
-            } else {
-                return ".\(target)"
+                value =  "\(typeName).\(target)"
             }
+
+            return Self.customEnumFilter(target, debug, value)
         } else {
             guard let index = "\(target)".firstIndex(of: "(") else {
                 throw PrettyDescriberError.unknownError(target: target)
@@ -530,5 +543,17 @@ struct SimpleDescriber {
 
         """
         print(message)
+    }
+}
+
+public extension SimpleDescriber {
+    static func singleline(option: Pretty.Option) -> SimpleDescriber {
+        let theme = option.colored ? option.theme : .plain
+        return SimpleDescriber(formatter: SinglelineFormatter(theme: theme), theme: theme)
+    }
+
+    static func multiline(option: Pretty.Option) -> SimpleDescriber {
+        let theme = option.colored ? option.theme : .plain
+        return SimpleDescriber(formatter: MultilineFormatter(indentSize: option.indentSize, theme: theme), theme: theme)
     }
 }
