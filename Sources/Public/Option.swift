@@ -6,8 +6,8 @@
 // Copyright (c) 2020 Yusuke Hosonuma.
 //
 
-extension Pretty {
-    public struct Option {
+public extension Pretty {
+    struct Option {
         public var prefix: String?
         public var indentSize: Int
         public var theme: ColorTheme

@@ -26,7 +26,7 @@ public class Pretty {
 
 // MARK: Standard API
 
-extension Pretty {
+public extension Pretty {
     /// Output `targets` to console.
     /// - Parameters:
     ///   - label: label
@@ -35,7 +35,7 @@ extension Pretty {
     ///   - option: option (default: `Pretty.sharedOption`)
     ///   - colored: whether to apply the color theme in `option`.
     /// - Warning: Xcode doesn't support console coloring since Xcode 8
-    public static func print(
+    static func print(
         label: String? = nil,
         _ targets: Any...,
         separator: String = " ",
@@ -50,7 +50,7 @@ extension Pretty {
     ///   - targets: targets
     ///   - separator: A string to print between each item.
     ///   - option: option (default: `Pretty.sharedOption`)
-    public static func splatPrint(
+    static func splatPrint(
         label: String?,
         targets: [Any],
         separator: String,
@@ -67,7 +67,7 @@ extension Pretty {
     ///   - option: option (default: `Pretty.sharedOption`)
     ///   - colored: whether to apply the color theme in `option`.
     ///   - output: output
-    public static func print<Target: TextOutputStream>(
+    static func print<Target: TextOutputStream>(
         label: String? = nil,
         _ targets: Any...,
         separator: String = " ",
@@ -85,7 +85,7 @@ extension Pretty {
     ///   - option: option (default: `Pretty.sharedOption`)
     ///   - colored: whether to apply the color theme in `option`.
     ///   - output: output
-    public static func splatPrint<Target: TextOutputStream>(
+    static func splatPrint<Target: TextOutputStream>(
         label: String?,
         targets: [Any],
         separator: String,
@@ -104,7 +104,7 @@ extension Pretty {
     ///   - option: option (default: `Pretty.sharedOption`)
     ///   - colored: whether to apply the color theme in `option`.
     /// - Warning: Xcode doesn't support console coloring since Xcode 8
-    public static func prettyPrint(
+    static func prettyPrint(
         label: String? = nil,
         _ targets: Any...,
         separator: String = "\n",
@@ -119,7 +119,7 @@ extension Pretty {
     ///   - targets: targets
     ///   - separator: A string to print between each item.
     ///   - option: option (default: `Pretty.sharedOption`)
-    public static func splatPrettyPrint(
+    static func splatPrettyPrint(
         label: String?,
         targets: [Any],
         separator: String,
@@ -135,7 +135,7 @@ extension Pretty {
     ///   - separator: A string to print between each item.
     ///   - option: option (default: `Pretty.sharedOption`)
     ///   - output: output
-    public static func prettyPrint<Target: TextOutputStream>(
+    static func prettyPrint<Target: TextOutputStream>(
         label: String? = nil,
         _ targets: Any...,
         separator: String = "\n",
@@ -152,7 +152,7 @@ extension Pretty {
     ///   - separator: A string to print between each item.
     ///   - option: option (default: `Pretty.sharedOption`)
     ///   - output: output
-    public static func splatPrettyPrint<Target: TextOutputStream>(
+    static func splatPrettyPrint<Target: TextOutputStream>(
         label: String?,
         targets: [Any],
         separator: String,
@@ -171,7 +171,7 @@ extension Pretty {
     ///   - option: option (default: `Pretty.sharedOption`)
     ///   - colored: whether to apply the color theme in `option`.
     /// - Warning: Xcode doesn't support console coloring since Xcode 8
-    public static func printDebug(
+    static func printDebug(
         label: String? = nil,
         _ targets: Any...,
         separator: String = " ",
@@ -186,7 +186,7 @@ extension Pretty {
     ///   - targets: targets
     ///   - separator: A string to print between each item.
     ///   - option: option (default: `Pretty.sharedOption`)
-    public static func splatPrintDebug(
+    static func splatPrintDebug(
         label: String?,
         targets: [Any],
         separator: String,
@@ -202,7 +202,7 @@ extension Pretty {
     ///   - separator: A string to print between each item.
     ///   - option: option (default: `Pretty.sharedOption`)
     ///   - output: output
-    public static func printDebug<Target: TextOutputStream>(
+    static func printDebug<Target: TextOutputStream>(
         label: String? = nil,
         _ targets: Any...,
         separator: String = " ",
@@ -219,7 +219,7 @@ extension Pretty {
     ///   - separator: A string to print between each item.
     ///   - option: option (default: `Pretty.sharedOption`)
     ///   - output: output
-    public static func splatPrintDebug<Target: TextOutputStream>(
+    static func splatPrintDebug<Target: TextOutputStream>(
         label: String?,
         targets: [Any],
         separator: String,
@@ -237,7 +237,7 @@ extension Pretty {
     ///   - option: option (default: `Pretty.sharedOption`)
     ///   - colored: whether to apply the color theme in `option`.
     /// - Warning: Xcode doesn't support console coloring since Xcode 8
-    public static func prettyPrintDebug(
+    static func prettyPrintDebug(
         label: String? = nil,
         _ targets: Any...,
         separator: String = "\n",
@@ -251,7 +251,7 @@ extension Pretty {
     ///   - targets: targets
     ///   - separator: A string to print between each item.
     ///   - option: option (default: `Pretty.sharedOption`)
-    public static func splatPrettyPrintDebug(
+    static func splatPrettyPrintDebug(
         label: String?,
         targets: [Any],
         separator: String,
@@ -266,7 +266,7 @@ extension Pretty {
     ///   - separator: A string to print between each item.
     ///   - option: option (default: `Pretty.sharedOption`)
     ///   - output: output
-    public static func prettyPrintDebug<Target: TextOutputStream>(
+    static func prettyPrintDebug<Target: TextOutputStream>(
         label: String? = nil,
         _ targets: Any...,
         separator: String = "\n",
@@ -282,7 +282,7 @@ extension Pretty {
     ///   - separator: A string to print between each item.
     ///   - option: option (default: `Pretty.sharedOption`)
     ///   - output: output
-    public static func splatPrettyPrintDebug<Target: TextOutputStream>(
+    static func splatPrettyPrintDebug<Target: TextOutputStream>(
         label: String?,
         targets: [Any],
         separator: String,
@@ -295,9 +295,9 @@ extension Pretty {
 
     // MARK: - private
 
-    typealias Printer = (String?, [Any], String, Option) -> String
+    internal typealias Printer = (String?, [Any], String, Option) -> String
 
-    static func _output(
+    internal static func _output(
         printer: Printer,
         label: String?,
         _ targets: [Any],

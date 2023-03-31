@@ -29,7 +29,7 @@ extension PrettyDescriberError: LocalizedError {
     }
 
     func dumpString(_ target: Any) -> String {
-        var string: String = ""
+        var string = ""
         dump(target, to: &string)
         return string
     }

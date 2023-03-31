@@ -15,31 +15,31 @@
         init(url: URL) {
             self.url = url
             #if !os(WASI)
-            let directoryPath = url.deletingLastPathComponent()
-            if !FileManager().fileExists(atPath: directoryPath.absoluteString) {
-                do {
-                    try FileManager().createDirectory(at: directoryPath, withIntermediateDirectories: true)
-                } catch {
-                    print("[SwiftPrettyPrint] Failed to create directory. (\(directoryPath))")
+                let directoryPath = url.deletingLastPathComponent()
+                if !FileManager().fileExists(atPath: directoryPath.absoluteString) {
+                    do {
+                        try FileManager().createDirectory(at: directoryPath, withIntermediateDirectories: true)
+                    } catch {
+                        print("[SwiftPrettyPrint] Failed to create directory. (\(directoryPath))")
+                    }
                 }
-            }
             #endif
         }
 
         func write(_ string: String) {
             #if !os(WASI)
-            guard let output = OutputStream(url: url, append: true) else { return }
+                guard let output = OutputStream(url: url, append: true) else { return }
 
-            output.open()
-            defer { output.close() }
+                output.open()
+                defer { output.close() }
 
-            guard let data = string.data(using: .utf8) else { return }
-            data.withUnsafeBytes { ptr in
-                guard let bytes = ptr.baseAddress?.assumingMemoryBound(to: UInt8.self) else {
-                    return
+                guard let data = string.data(using: .utf8) else { return }
+                data.withUnsafeBytes { ptr in
+                    guard let bytes = ptr.baseAddress?.assumingMemoryBound(to: UInt8.self) else {
+                        return
+                    }
+                    _ = output.write(bytes, maxLength: data.count)
                 }
-                _ = output.write(bytes, maxLength: data.count)
-            }
             #endif
         }
     }

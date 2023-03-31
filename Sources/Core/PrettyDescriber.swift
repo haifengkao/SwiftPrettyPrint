@@ -177,8 +177,9 @@ struct PrettyDescriber {
         // - that filed is not property-wrapper of SwiftUI
         //
         if children.count == 1,
-            let value = children.first?.value,
-            isSwiftUIPropertyWrapperType(value) == false {
+           let value = children.first?.value,
+           isSwiftUIPropertyWrapperType(value) == false
+        {
             return asPremitiveString(value, debug: debug)
         } else {
             return nil
@@ -285,8 +286,9 @@ struct PrettyDescriber {
             // @Environment
             //
             if typeName.hasPrefix("Environment<"),
-                let content = lookup("content", from: target),
-                let rawValue = Mirror(reflecting: content).children.first?.value {
+               let content = lookup("content", from: target),
+               let rawValue = Mirror(reflecting: content).children.first?.value
+            {
                 if debug {
                     return "@Environment(\(__string(rawValue)))"
                 } else {
@@ -312,8 +314,9 @@ struct PrettyDescriber {
             // @SceneStorage
             //
             if #available(iOS 14, macOS 11.0,*),
-                typeName.hasPrefix("SceneStorage<"),
-                let key = lookup("_key", from: target) as? String {
+               typeName.hasPrefix("SceneStorage<"),
+               let key = lookup("_key", from: target) as? String
+            {
                 let value: String
 
                 switch target {
@@ -398,7 +401,8 @@ struct PrettyDescriber {
 
                 case let value as CustomStringConvertible:
                     if #available(iOS 10.0, tvOS 10.0, *),
-                        let _ = value as? UIComponent {
+                       let _ = value as? UIComponent
+                    {
                         return nil
                     } else {
                         return value.description
@@ -411,7 +415,8 @@ struct PrettyDescriber {
                 switch target {
                 case let value as CustomStringConvertible:
                     if #available(iOS 10.0, tvOS 10.0, *),
-                        let _ = value as? UIComponent {
+                       let _ = value as? UIComponent
+                    {
                         return nil
                     } else {
                         return value.description
