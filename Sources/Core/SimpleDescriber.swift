@@ -17,6 +17,12 @@
 #endif
 
 public typealias Fields = [(String, String)]
+public typealias CustomFieldsReorder<T: Any> = (_ target: T, _ fields: Fields) -> Fields
+
+private func identityCustomFieldsReorder<T: Any>(_: T, _ fields: Fields) -> Fields {
+    fields
+}
+
 public typealias CustomStringFilter<T: Any> = (_ target: T, _ debug: Bool, _ original: String) -> String
 public typealias CustomStringFilterWithFields<T: Any> = (_ target: T, _ debug: Bool, _ original: String, _ fields: Fields) -> String
 private func identity<T: Any>(_: T, _: Bool, _ original: String) -> String {
@@ -35,6 +41,7 @@ public struct SimpleDescriber {
     public static var customEnumFilter: CustomStringFilter<Any> = identity
     public static var customObjectFilter: CustomStringFilterWithFields<Any> = identityWithFields
     public static var customValueFilter: CustomStringFilter<Any> = identity
+    public static var customFieldsReorder: CustomFieldsReorder<Any> = identityCustomFieldsReorder
 
     func string<T: Any>(_ target: T, debug: Bool) -> String {
         func _string(_ target: Any) -> String {
@@ -114,8 +121,10 @@ public struct SimpleDescriber {
         }
 
         // Object
-        let fields = objectFields(target, debug: debug)
+        let fields = Self.customFieldsReorder(target, objectFields(target, debug: debug))
+
         let value = formatter.objectString(typeName: typeName, fields: fields)
+
         return Self.customObjectFilter(target, debug, value, fields)
     }
 
